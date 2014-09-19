@@ -12,7 +12,7 @@ Installation Using Your Own Method.'
 
 dependency 'puppetlabs/stdlib', '>=2.3.0'
 dependency 'puppetlabs/mysql', '>=2.0.0 <3.0.0'
-dependency 'puppetlabs/postgresql', '>=2.1.0 <3.0.0'
+dependency 'puppetlabs/postgresql', '>=2.1.0 <=3.4.2'
 dependency 'nanliu/staging', '>=0.2.1'
 dependency 'stahnma/epel', '>=0.0.3'
 dependency 'puppetlabs/java_ks', '>=1.0.0 <2.0.0'
