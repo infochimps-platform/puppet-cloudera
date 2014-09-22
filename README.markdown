@@ -1,5 +1,12 @@
 #Cloudera Manager
 
+Special SRP related changes.
+* Added Modulefile to support puppet version 3.4 SRP uses at the moment. Puppet
+  3.6 made Modulefile obsolete
+* Set uppet version boundary to 3.4.2 for puppetlabs/postgresql to avoid version
+  conflict during modules installation. Here is the reason why it was needed
+  https://github.com/razorsedge/puppet-cloudera/issues/11
+
 [![Build Status](https://secure.travis-ci.org/razorsedge/puppet-cloudera.png?branch=master)](http://travis-ci.org/razorsedge/puppet-cloudera)
 
 ####Table of Contents
