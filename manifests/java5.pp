@@ -88,11 +88,22 @@ class cloudera::java5 (
 
   case $::operatingsystem {
     'CentOS', 'RedHat', 'OEL', 'OracleLinux', 'SLES': {
-      file { '/usr/java/default':
-        ensure  => symlink,
-        target  => '/usr/java/jdk1.7.0_45-cloudera',
+      file { '/usr/java/_mklinks.sh':
+        ensure  => $file_ensure,
+        source  => "puppet:///modules/${module_name}/_mklinks.sh",
+        mode    => '0744',
+        owner   => 'root',
+        group   => 'root',
         require => [ Anchor['cloudera::java5::begin'], Package['jdk'], ],
         before  => Anchor['cloudera::java5::end'],
+      }
+
+      exec { '/usr/java/_mklinks.sh':
+        command     => '/usr/java/_mklinks.sh',
+        refreshonly => true,
+        path        => '/bin:/usr/bin:/sbin:/usr/sbin',
+        require     => [ Anchor['cloudera::java5::begin'], File['/usr/java/_mklinks.sh'], ],
+        subscribe   => Package['jdk'],
       }
 
       Exec {
@@ -132,9 +143,7 @@ class cloudera::java5 (
 --slave /usr/share/man/man1/rmiregistry.1 rmiregistry.1.gz /usr/java/default/man/man1/rmiregistry.1 \
 --slave /usr/share/man/man1/servertool.1 servertool.1.gz /usr/java/default/man/man1/servertool.1 \
 --slave /usr/share/man/man1/tnameserv.1 tnameserv.1.gz /usr/java/default/man/man1/tnameserv.1 \
---slave /usr/share/man/man1/unpack200.1 unpack200.1.gz /usr/java/default/man/man1/unpack200.1 \
---slave /usr/lib/jvm/jre jre /usr/java/default/jre \
---slave /usr/lib/jvm-exports/jre jre_exports /usr/java/default/jre/lib',
+--slave /usr/share/man/man1/unpack200.1 unpack200.1.gz /usr/java/default/man/man1/unpack200.1',
             unless  => 'update-alternatives --display java | grep -q /usr/java/default/bin/java',
             path    => '/bin:/usr/bin:/sbin:/usr/sbin',
             require => Package['jdk'],
@@ -201,9 +210,7 @@ class cloudera::java5 (
 --slave /usr/share/man/man1/wsgen.1 wsgen.1.gz /usr/java/default/man/man1/wsgen.1 \
 --slave /usr/share/man/man1/wsimport.1 wsimport.1.gz /usr/java/default/man/man1/wsimport.1 \
 --slave /usr/share/man/man1/xjc.1 xjc.1.gz /usr/java/default/man/man1/xjc.1 \
---slave /usr/share/man/man1/jvisualvm.1 jvisualvm.1.gz /usr/java/default/man/man1/jvisualvm.1 \
---slave /usr/lib/jvm/java java_sdk /usr/java/default \
---slave /usr/lib/jvm-exports/java java_sdk_exports /usr/java/default/lib',
+--slave /usr/share/man/man1/jvisualvm.1 jvisualvm.1.gz /usr/java/default/man/man1/jvisualvm.1',
             unless  => 'update-alternatives --display javac | grep -q /usr/java/default/bin/javac',
             path    => '/bin:/usr/bin:/sbin:/usr/sbin',
             require => Package['jdk'],

@@ -12,8 +12,8 @@ describe 'cloudera::java5', :type => 'class' do
     end
     it do
       expect {
-        should compile
-      }.to raise_error(Puppet::Error, /Module cloudera is not supported on bar/)
+        should raise_error(Puppet::Error, /Module cloudera is not supported on bar/)
+      }
     end
   end
 
@@ -32,6 +32,20 @@ describe 'cloudera::java5', :type => 'class' do
         :mode   => '0755',
         :owner  => 'root',
         :group  => 'root'
+      )}
+      it { should contain_file('/usr/java/_mklinks.sh').with(
+        :ensure => 'present',
+        :path   => '/usr/java/_mklinks.sh',
+        :mode   => '0744',
+        :owner  => 'root',
+        :group  => 'root'
+      )}
+      it { should contain_exec('/usr/java/_mklinks.sh').with(
+        :command     => '/usr/java/_mklinks.sh',
+        :refreshonly => 'true',
+        :path        => '/bin:/usr/bin:/sbin:/usr/sbin',
+        :require     => [ 'Anchor[cloudera::java5::begin]', 'File[/usr/java/_mklinks.sh]', ],
+        :subscribe   => 'Package[jdk]'
       )}
       it { should contain_exec('java-alternatives').with(
         :command => 'update-alternatives --install /usr/bin/java java /usr/java/default/bin/java 1601 \
@@ -53,9 +67,7 @@ describe 'cloudera::java5', :type => 'class' do
 --slave /usr/share/man/man1/rmiregistry.1 rmiregistry.1.gz /usr/java/default/man/man1/rmiregistry.1 \
 --slave /usr/share/man/man1/servertool.1 servertool.1.gz /usr/java/default/man/man1/servertool.1 \
 --slave /usr/share/man/man1/tnameserv.1 tnameserv.1.gz /usr/java/default/man/man1/tnameserv.1 \
---slave /usr/share/man/man1/unpack200.1 unpack200.1.gz /usr/java/default/man/man1/unpack200.1 \
---slave /usr/lib/jvm/jre jre /usr/java/default/jre \
---slave /usr/lib/jvm-exports/jre jre_exports /usr/java/default/jre/lib',
+--slave /usr/share/man/man1/unpack200.1 unpack200.1.gz /usr/java/default/man/man1/unpack200.1',
         :unless  => 'update-alternatives --display java | grep -q /usr/java/default/bin/java',
         :path    => '/bin:/usr/bin:/sbin:/usr/sbin',
         :require => 'Package[jdk]'
@@ -120,9 +132,7 @@ describe 'cloudera::java5', :type => 'class' do
 --slave /usr/share/man/man1/wsgen.1 wsgen.1.gz /usr/java/default/man/man1/wsgen.1 \
 --slave /usr/share/man/man1/wsimport.1 wsimport.1.gz /usr/java/default/man/man1/wsimport.1 \
 --slave /usr/share/man/man1/xjc.1 xjc.1.gz /usr/java/default/man/man1/xjc.1 \
---slave /usr/share/man/man1/jvisualvm.1 jvisualvm.1.gz /usr/java/default/man/man1/jvisualvm.1 \
---slave /usr/lib/jvm/java java_sdk /usr/java/default \
---slave /usr/lib/jvm-exports/java java_sdk_exports /usr/java/default/lib',
+--slave /usr/share/man/man1/jvisualvm.1 jvisualvm.1.gz /usr/java/default/man/man1/jvisualvm.1',
         :unless  => 'update-alternatives --display javac | grep -q /usr/java/default/bin/javac',
         :path    => '/bin:/usr/bin:/sbin:/usr/sbin',
         :require => 'Package[jdk]'
