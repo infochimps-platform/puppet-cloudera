@@ -134,7 +134,7 @@ class cloudera::cm5 (
 
   if defined(consul::service) {
     consul::service { 'cloudera-scm-agent':
-      check_script => 'service cloudera-scm-agent'
+      check_script => 'service cloudera-scm-agent',
       check_interval => 10s,
     }
   }
