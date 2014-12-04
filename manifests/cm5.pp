@@ -126,4 +126,12 @@ class cloudera::cm5 (
     hasstatus  => true,
     require    => [ Package['cloudera-manager-agent'], Package['cloudera-manager-daemons'], ],
   }
+
+  if defined(consul::service) {
+    consul::service { 'cloudera-scm-agent':
+      check_script => 'service cloudera-scm-agent status',
+      check_interval => 10s,
+    }
+  }
+
 }

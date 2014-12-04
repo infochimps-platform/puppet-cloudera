@@ -201,6 +201,14 @@ class cloudera::cm5::server (
     require    => Package['cloudera-manager-server'],
   }
 
+  if defined(consul::service) {
+    consul::service { 'cloudera-scm-server':
+      check_script => 'service cloudera-scm-server status',
+      check_interval => 10s,
+    }
+  }
+
+
   case $db_type {
     'embedded': {
       package { 'cloudera-manager-server-db':
