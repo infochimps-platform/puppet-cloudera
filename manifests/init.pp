@@ -409,7 +409,7 @@ class cloudera (
           ensure         => $ensure,
           reposerver     => $cdh_reposerver,
           repopath       => $cdh5_repopath,
-          version        => $cdh_version,
+          version        => '5.4',
           proxy          => $proxy,
           proxy_username => $proxy_username,
           proxy_password => $proxy_password,
