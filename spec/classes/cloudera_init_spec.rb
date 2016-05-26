@@ -12,8 +12,8 @@ describe 'cloudera', :type => 'class' do
     end
     it do
       expect {
-        should compile
-      }.to raise_error(Puppet::Error, /Module cloudera is not supported on bar/)
+        should raise_error(Puppet::Error, /Module cloudera is not supported on bar/)
+      }
     end
   end
 
@@ -30,6 +30,8 @@ describe 'cloudera', :type => 'class' do
       :value  => '0',
       :apply  => 'true'
     )}
+    it { should contain_exec('disable_transparent_hugepage_defrag') }
+    it { should contain_exec('disable_redhat_transparent_hugepage_defrag') }
     it { should contain_class('cloudera::java5').with_ensure('present') }
     it { should_not contain_class('cloudera::java5::jce') }
     it { should contain_class('cloudera::cm5::repo').with_ensure('present') }
@@ -133,8 +135,8 @@ describe 'cloudera', :type => 'class' do
       end
       it do
         expect {
-          should compile
-        }.to raise_error(Puppet::Error, /Parameter \$cg_version must be 5 if \$cdh_version is 5./)
+          should raise_error(Puppet::Error, /Parameter \$cg_version must be 5 if \$cdh_version is 5./)
+        }
       end
     end
 
@@ -219,8 +221,8 @@ describe 'cloudera', :type => 'class' do
       end
       it do
         expect {
-          should compile
-        }.to raise_error(Puppet::Error, /Parameter \$cg_version must be 4 if \$cdh_version is 4./)
+          should raise_error(Puppet::Error, /Parameter \$cg_version must be 4 if \$cdh_version is 4./)
+        }
       end
     end
 
@@ -251,8 +253,8 @@ describe 'cloudera', :type => 'class' do
     end
     it do
       expect {
-        should compile
-      }.to raise_error(Puppet::Error, /Parameter \$cm_version must start with either 4 or 5./)
+        should raise_error(Puppet::Error, /Parameter \$cm_version must start with either 4 or 5./)
+      }
     end
   end
 

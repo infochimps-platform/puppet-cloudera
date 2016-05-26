@@ -213,7 +213,7 @@ class cloudera::params {
       $ci_repopath = "/impala/redhat/${majdistrelease}/${::architecture}/impala/"
       $cs_repopath = "/search/redhat/${majdistrelease}/${::architecture}/search/"
       $cg_repopath = "/gplextras/redhat/${majdistrelease}/${::architecture}/gplextras/"
-      $java5_package_name = 'oracle-j2sdk1.7'
+      $java5_package_name = 'jdk1.8.0_60.x86_64'
       $cm5_repopath = "/cm5/redhat/${majdistrelease}/${::architecture}/cm/"
       $cdh5_repopath = "/cdh5/redhat/${majdistrelease}/${::architecture}/cdh/"
       $cg5_repopath = "/gplextras5/redhat/${majdistrelease}/${::architecture}/gplextras/"
@@ -302,4 +302,10 @@ class cloudera::params {
     undef   => "${tls_dir}/private/${::fqdn}-cloudera_manager.key",
     default => $::cloudera_server_key_file,
   }
+
+  $parcel_dir = $::cloudera_parcel_dir ? {
+    undef => '/opt/cloudera/parcels',
+    default => $::cloudera_parcel_dir,
+  }
+
 }

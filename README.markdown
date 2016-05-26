@@ -51,7 +51,8 @@ This module manages the installation of [Cloudera Manager](http://www.cloudera.c
 * Installs the CM agent.
 * Configures the CM agent to talk to a CM server.
 * Starts the CM agent.
-* Sets the [kernel vm.swappiness](http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH5/latest/CDH5-Installation-Guide/cdh5ig_topic_11_6.html) to 0.
+* Sets the [kernel vm.swappiness](http://www.cloudera.com/content/cloudera/en/documentation/cdh5/v5-0-0/CDH5-Installation-Guide/cdh5ig_tips_guidelines.html) to 0.
+* Disables the [kernel transparent hugepage compaction](http://www.cloudera.com/content/cloudera/en/documentation/cdh5/v5-0-0/CDH5-Installation-Guide/cdh5ig_tips_guidelines.html).
 * Separately installs the CM server and database connectivity (by default to the embedded database server).
 * Separately starts the CM server.
 * Optionally installs the Cloudera software repository for CDH.
@@ -153,6 +154,11 @@ class { 'cloudera':
   install_lzo    => true,
 }
 ```
+
+- The [puppetlabs/postgresql](https://forge.puppetlabs.com/puppetlabs/postgresql) dependency will update to version 3 or newer for the 3.0.0 release.  Make sure to review its changelog in the case of an upgrade.
+
+- The [herculesteam/augeasproviders](https://forge.puppetlabs.com/herculesteam/augeasproviders) modules will replace [domcleal/augeasproviders](https://forge.puppetlabs.com/domcleal/augeasproviders) for the 3.0.0 release.
+
 
 ##Usage
 
@@ -545,11 +551,16 @@ Default: absent
 The password for the YUM proxy.
 Default: absent
 
+####`parcel_dir`
+
+The directory where parcels are downloaded and distributed.
+Default: /opt/cloudera/parcels
+
 ##Limitations
 
 ###OS Support:
 
-Cloudera official [supported operating systems](http://www.cloudera.com/content/cloudera-content/cloudera-docs/CM5/latest/Cloudera-Manager-Installation-Guide/cm5ig_cm_requirements.html?scroll=cmig_topic_4_1_unique_1).
+Cloudera official [supported operating systems for CM4](http://www.cloudera.com/content/cloudera/en/documentation/cloudera-manager/v4-latest/Cloudera-Manager-Installation-Guide/cmig_cm_requirements.html#cmig_topic_4_1_unique_1) and [supported operating systems for CM5](http://www.cloudera.com/content/cloudera-content/cloudera-docs/CM5/latest/Cloudera-Manager-Installation-Guide/cm5ig_cm_requirements.html?scroll=cmig_topic_4_1_unique_1).
 
 * RedHat family - tested on CentOS 5.9, CentOS 6.4
 * SuSE family   - tested on SLES 11SP3
